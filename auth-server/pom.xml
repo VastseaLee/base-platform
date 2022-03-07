@@ -21,6 +21,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>com.base.api</groupId>
             <artifactId>auth-api</artifactId>
@@ -34,8 +35,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
+            <groupId>com.base</groupId>
             <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

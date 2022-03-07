@@ -12,4 +12,9 @@ spring:
 dubbo:
   registry:
     address: nacos://127.0.0.1:8848
-    parameters[namespace]: public
+  scan:
+    base-packages: com.base.authserver.facade
+  protocol:
+    port: -1
+    name: dubbo
+    serialization: kryo

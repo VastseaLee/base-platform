@@ -1,21 +1,33 @@
 package com.base.datamanage.controller;
 
-import com.base.api.auth.facade.AuthServerService;
-import com.base.api.auth.model.UserInfo;
-import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.base.api.common.model.R;
+import com.base.datamanage.dto.input.TestInputDTO;
+import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("test")
+@Api(tags = "转发测试")
 public class TestController {
 
-    @DubboReference
-    private AuthServerService authServerService;
+    @GetMapping("testGetParam")
+    public R<String> testGetParam(String id){
+        return R.success(id);
+    }
 
-    @GetMapping("query")
-    public UserInfo queryUserInfo() {
-        return authServerService.queryUserInfo();
+    @GetMapping("testGetPath/{id}")
+    public R<String> testGetPath(@PathVariable("id") String id){
+        return R.success(id);
+    }
+
+    @PostMapping("testPostJson")
+    public R<TestInputDTO> testPostJson(@RequestBody TestInputDTO dto){
+        return R.success(dto);
+    }
+
+    @PostMapping("testPostForm")
+    public R<TestInputDTO> testPostForm(TestInputDTO dto){
+        return R.success(dto);
     }
 }

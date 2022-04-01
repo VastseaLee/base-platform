@@ -25,6 +25,7 @@
         <module>data-manage</module>
         <module>api</module>
         <module>inner-intergration</module>
+        <module>api/data-manage-api</module>
     </modules>
 
     <dependencies>

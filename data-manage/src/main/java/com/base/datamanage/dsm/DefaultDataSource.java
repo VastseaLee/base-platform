@@ -5,6 +5,7 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 import com.base.api.common.model.PageModel;
 import com.base.api.common.model.PageResult;
 import com.base.api.datamanage.model.BusDataSource;
+import com.base.api.datamanage.model.DataAssessExtendMsg;
 import com.base.datamanage.dto.input.*;
 import com.base.datamanage.dto.output.BusDataColumnOutputDTO;
 import com.base.datamanage.dto.output.BusDataTableOutputDTO;
@@ -54,6 +55,15 @@ public class DefaultDataSource extends DruidDataSource {
      */
     protected String getPageSql(String sql, long total, long current, long size) {
         return sql;
+    }
+
+    /**
+     * 子类务必重写！！！！！(或者搞一套通用的)
+     *
+     * @return
+     */
+    public List<DataAssessExtendMsg> listLastUpdateTime(List<String> tableNameList) {
+        return null;
     }
 
     /**
@@ -287,11 +297,11 @@ public class DefaultDataSource extends DruidDataSource {
     }
 
     private List<BusDataColumnOutputDTO> getColList(DataEditInputDTO dto) {
-        List<BusDataColumnOutputDTO> colList =  dto.getColList();
-        if(CollectionUtils.isEmpty(colList)){
+        List<BusDataColumnOutputDTO> colList = dto.getColList();
+        if (CollectionUtils.isEmpty(colList)) {
             BusDataColumnSearchInputDTO searchInputDTO = new BusDataColumnSearchInputDTO();
             searchInputDTO.setTableName(dto.getTableName());
-            colList =  listColumnSource(searchInputDTO);
+            colList = listColumnSource(searchInputDTO);
         }
         return colList;
     }
@@ -336,5 +346,4 @@ public class DefaultDataSource extends DruidDataSource {
         appendConditionByKeys(sb, dto.getOldData(), colList, paramList);
         jdbcTemplate.update(sb.toString(), paramList.toArray());
     }
-
 }

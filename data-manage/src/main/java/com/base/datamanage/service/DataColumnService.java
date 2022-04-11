@@ -1,5 +1,6 @@
 package com.base.datamanage.service;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.base.api.datamanage.model.BusDataColumn;
@@ -48,6 +49,15 @@ public class DataColumnService extends ServiceImpl<DataColumnMapper, BusDataColu
                     }
                 });
             }
+            sourceList.forEach(outputDTO ->
+                    outputDTO.setDisplayName(
+                            !StringUtils.isEmpty(outputDTO.getCustomColumnName()) ?
+                            outputDTO.getCustomColumnName() :
+                            !StringUtils.isEmpty(outputDTO.getRemarks()) ?
+                                    outputDTO.getRemarks() :
+                                    outputDTO.getColumnName()
+                    )
+            );
         }
         return sourceList;
     }

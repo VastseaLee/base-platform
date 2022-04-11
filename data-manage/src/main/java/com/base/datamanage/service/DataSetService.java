@@ -33,9 +33,6 @@ import java.util.Map;
 public class DataSetService extends ServiceImpl<DataSetMapper, BusDataSet> {
 
     @Autowired
-    private DataSetMapper dataSetMapper;
-
-    @Autowired
     private DataSetSqlService dataSetSqlService;
 
     @Autowired
@@ -58,7 +55,7 @@ public class DataSetService extends ServiceImpl<DataSetMapper, BusDataSet> {
         if (pageModel.isPage()) {
             PageHelper.startPage(pageModel.getCurrent().intValue(), pageModel.getSize().intValue());
         }
-        List<BusDataSetOutputDTO> list = dataSetMapper.list(dto);
+        List<BusDataSetOutputDTO> list = baseMapper.list(dto);
         return PageUtil.toPage(list);
     }
 
@@ -100,6 +97,7 @@ public class DataSetService extends ServiceImpl<DataSetMapper, BusDataSet> {
             dataSetParamService.saveBatch(paramList);
         }
 
+        dto.setDelFlag(0);
         //保存返回字段
         batchSaveField(dto, id);
 
@@ -118,6 +116,10 @@ public class DataSetService extends ServiceImpl<DataSetMapper, BusDataSet> {
         if (!StringUtils.isEmpty(msg)) {
             return R.error(msg);
         }
+        //传进来的是空，就重新初始化
+        if (CollectionUtils.isEmpty(dto.getFieldList())) {
+            dto.setFieldUpdate(true);
+        }
         String errorMsg = "";
         BusDataSetPreviewOutputDTO result = null;
         try {
@@ -134,8 +136,15 @@ public class DataSetService extends ServiceImpl<DataSetMapper, BusDataSet> {
             errorMsg = e.getMessage();
             log.error("[preview data set error]", e);
         }
-
-        return result == null ? R.error(errorMsg) : R.success(result);
+        if (result == null) {
+            return R.error(errorMsg);
+        } else {
+            //这次查询是空，不覆盖之前的返回列
+//            if(CollectionUtils.isEmpty(result.getFieldList()) && !dto.isFieldUpdate()){
+//                result.setFieldList(dto.getFieldList());
+//            }
+            return R.success(result);
+        }
     }
 
     /**
@@ -201,7 +210,9 @@ public class DataSetService extends ServiceImpl<DataSetMapper, BusDataSet> {
         batchSaveField(dto, id);
 
         //更新基本信息
-        return updateById(dto);
+        updateById(dto);
+
+        return true;
     }
 
     private void batchSaveField(BusDataSetSaveDTO dto, String dataSetId) {
@@ -252,7 +263,7 @@ public class DataSetService extends ServiceImpl<DataSetMapper, BusDataSet> {
         Integer dataSetType = busDataSet.getDataSetType();
         switch (dataSetType) {
             case 1:
-                result.setSetDetail(dataSetSqlService.getOne(new LambdaQueryWrapper<BusDataSetSql>().eq(BusDataSetSql::getDataSetId, id)));
+                result.setSetDetail(dataSetSqlService.selectByDataSetId(id));
                 break;
             case 2:
                 result.setSetDetail(dataSetHttpService.getOne(new LambdaQueryWrapper<BusDataSetHttp>().eq(BusDataSetHttp::getDataSetId, id)));

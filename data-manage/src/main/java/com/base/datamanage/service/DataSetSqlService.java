@@ -11,6 +11,7 @@ import com.base.datamanage.dsm.DataSourceRegistry;
 import com.base.datamanage.dsm.DefaultDataSource;
 import com.base.datamanage.dto.input.BusDataSetPreviewInputDTO;
 import com.base.datamanage.dto.output.BusDataSetPreviewOutputDTO;
+import com.base.datamanage.dto.output.BusDataSetSqlOutputDTO;
 import com.base.datamanage.mapper.DataSetSqlMapper;
 import com.base.datamanage.util.DataSetUtil;
 import com.base.datamanage.util.DateUtil;
@@ -209,4 +210,7 @@ public class DataSetSqlService extends ServiceImpl<DataSetSqlMapper, BusDataSetS
     }
 
 
+    public BusDataSetSqlOutputDTO selectByDataSetId(String dataSetId) {
+        return baseMapper.selectByDataSetId(dataSetId);
+    }
 }

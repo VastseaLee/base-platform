@@ -3,8 +3,10 @@ package com.base.datamanage.dsm;
 import com.base.api.datamanage.model.BusDataSource;
 import com.base.datamanage.dsm.datasource.*;
 import com.base.datamanage.service.DataSourceService;
+import org.springframework.aop.interceptor.AsyncExecutionAspectSupport;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -59,7 +61,8 @@ public class DataSourceRegistry implements DisposableBean {
         cleanAll();
     }
 
-    @Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 0 5 * * ?")
+    @Async(AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME)
     public void cleanAll() {
         map.forEach((k, v) -> v.close());
         map.clear();

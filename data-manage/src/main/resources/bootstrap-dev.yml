@@ -1,5 +1,5 @@
 server:
-  port: 12100
+  port: 12200
 
 spring:
   cloud:
@@ -28,3 +28,19 @@ mybatis-plus:
   configuration:
     call-setters-on-nulls: true
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+httpclient:
+  #连接超时
+  connect-timeout: 3000
+  #数据读取超时
+  read-timeout: 3000
+  #连接池获取请求连接的超时时间
+  request-timeout: 3000
+  #最大连接数
+  max-total: 2000
+  #同路由并发数
+  max-per-route: 1000
+  #重试次数
+  retry-times: 2
+  #最大闲置时长
+  max-idle-time: 60000

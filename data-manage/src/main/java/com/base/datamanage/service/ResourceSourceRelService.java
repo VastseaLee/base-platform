@@ -25,7 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class ResourceSourceRelService extends ServiceImpl<ResourceSourceRelMapper,BusDataResourceSourceRel> {
+public class ResourceSourceRelService extends ServiceImpl<ResourceSourceRelMapper, BusDataResourceSourceRel> {
 
     @Autowired
     private DataSourceRegistry dataSourceRegistry;

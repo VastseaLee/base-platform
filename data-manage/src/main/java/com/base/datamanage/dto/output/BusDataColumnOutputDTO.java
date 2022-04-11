@@ -31,4 +31,6 @@ public class BusDataColumnOutputDTO extends BusDataColumn {
     @ApiModelProperty("是否是主键 1是 0否")
     private Integer primary;
 
+    @ApiModelProperty("显示名称")
+    private String displayName;
 }
